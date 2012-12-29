@@ -1,0 +1,1 @@
+{"forito":{"json_class":"Cuenta","data":{"tipo":1,"libretas":[],"usuario":{"json_class":"Referencia","data":["UsuarioNormal","forito"]},"activada":true}},"sirio":{"json_class":"Cuenta","data":{"tipo":1,"libretas":[],"usuario":{"json_class":"Referencia","data":["UsuarioNormal","sirio"]},"activada":true}}}

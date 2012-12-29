@@ -1,0 +1,73 @@
+* Rubynote
+** Pasos
+*** TODO prueba recorridos básicos
+** Indice
+   [[Pruebas]]
+   [[Diario]]
+   [[Codice]]
+   
+   [[Refactoring Log]]
+** Trucos de Emacs
+*** visual-line-mode
+Para tener word-wrap en el editor
+*** Ctrl-c .
+Para introducir una fecha (timestamp)
+** Notas
+** Enlaces
+*** Unit Testing with Ruby :unit test:ruby:howto:
+http://en.wikibooks.org/wiki/Ruby_Programming/Unit_testing
+** Codice
+*** Code Coverage
+:CUSTOM_ID: code coverage
+Permiten determinar las partes del código que no se están ejecutando en una prueba
+*** SimpleCov 
+:CUSTOM_ID: simplecov
+:CLASS: Herramienta
+:URL: https://github.com/colszowka/simplecov
+:Herramienta.implementa: [[#code coverage]]
+is a code coverage analysis tool for Ruby 1.9. It uses 1.9’s built-in Coverage library to gather code coverage data, but makes processing it’s results much easier by providing a clean API to filter, group, merge, format and display those results, thus giving you a complete code coverage suite with just a couple lines of code.
+** Archivos
+*** tests/Test01_probar_validadores.rb
+:CUSTOM_ID: probar_validadores
+Implementa las pruebas de cobertura 1 positivo y 1 negativo sobre cada uno de los validadores genéricos definidos en [[class Validacion::ValidadorGenerico]]
+** Objetos de Código
+*** class Validacion::ValidadorGenerico
+Implementa una serie de validaciones típicas
+** Pruebas
+*** Prueba 1: Crear un usuario normal con login 'admin'
+    :CUSTOM_ID: prueba001
+    Debe fallar porque el sistema siempre tiene un usuario admin creado por la instalación. Existe la posibilidad de que no falle porque el usuario admin y los usuarios comunes son clases distintas derivadas de una misma clase padre.
+*** Prueba 2:
+    :CUSTOM_ID: prueba002
+    
+** Refactoring Log
+*** <2012-12-25 mar>
+    Inicio
+** Diario
+*** <2012-12-26 mié>
+Hecho un test unitario en [[#probar_validadores]] para verificar las diferentes validaciones genéricas (sin_espacion, longitud, presencia, etc)
+*** <2012-12-25 mar>
+Conseguido hacer la validación de unicidad del login de una manera mas o menos elegante (haciendo que el archivo lleve cuenta de las herencias y con una validación "custom").
+*** <2012-12-24 lun>
+He reorganizado los requires y la serialización y ahora si creo que está correctamente 
+simplificada (toda la serializacion incluido los métodos "estilo activerecord" en un solo 
+modulo y los require de dependencias circulares después de la cabecera de la clase al estilo
+C++).
+Mi problema ahora es como hacer las validaciones en los modelos de una manera que no sea
+excesivamente cansina, intentando imitar el estilo rails.
+*** <2012-12-23 dom>
+He implementado la vista /admin/listaUsuarios correctamente paginada.
+Ahora toca implementar la creación y eliminación de usuarios
+*** <2012-12-23 dom>
+He conseguido entrar como administrador y que salga el menu de administrador
+Ahora hay que probar el menu de usuario normal que no esta hecho y añadir las acciones/controladores al resto de menus
+Por el momento la serialización funciona correctamente, aunque hay que simplificarla, probablemente 
+unificando el modulo Serializacion y RegistroActivo
+** QuestLog
+** Foco
+*** Modificando las validaciones en UI
+Estoy cambiando la manera de hacer las validaciones en la UI.   
+** Errores y Defectos
+*** En usuario.rb:39 el nombre de la funcion que autentica
+:CUSTOM_ID: Defecto001   
+Actualmente se llama validar y debería llamarse autenticar. Tambien las siguientes
