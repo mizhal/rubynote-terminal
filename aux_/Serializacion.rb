@@ -1,10 +1,10 @@
 require 'date'
 
-require_relative "archivo.rb"
-require_relative "referencia.rb"
-require_relative "contexto_referencia.rb"
-
 module Serializacion
+  require_relative "archivo.rb"
+  require_relative "referencia.rb"
+  require_relative "contexto_referencia.rb"
+  
   def self.included(base)
     base.extend MetodosDeClase
   end
@@ -27,6 +27,12 @@ module Serializacion
     
     def iterador
       Archivo.instancia().iterador(self.name){|objeto| yield objeto}
+    end
+    
+    def todos
+      col = []
+      iterador {|c| col << c}
+      return col
     end
   end
   

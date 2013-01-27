@@ -14,6 +14,7 @@ class Cuenta
   @usuario = Usuario
   
   attr_accessor :activada
+  attr_reader :libretas
   
   ## Persistencia de datos
   include Serializacion
@@ -30,7 +31,7 @@ class Cuenta
   
   def initialize usuario = nil
     @tipo = TipoCuenta::NORMAL
-    @libretas = []
+    @libretas = [Libreta.crear("Varios")]
     @usuario = usuario
     @activada = false
   end
@@ -44,12 +45,8 @@ class Cuenta
     nueva
   end
   
-  def libreta nombre
-    @libretas[nombre]
-  end
-  
   def existeLibreta? nombre
-    @libretas.has_key? nombre
+    ! @libretas.select{|x| x.nombre == nombre}.empty?
   end
   
   def esPremium?
@@ -58,11 +55,31 @@ class Cuenta
   
   def cambiaTipo
     if self.esPremium?
-      @tipo == TipoCuenta::NORMAL
+      @tipo = TipoCuenta::NORMAL
     else
-      @tipo == TipoCuenta::PREMIUM
+      @tipo = TipoCuenta::PREMIUM
     end
   end
-
+  
+  def estaActivada?
+    @activada
+  end
+  
+  def desactiva
+    @activada = false
+  end
+  
+  def activa
+    @activada = true
+  end
+  
+  def dependientes
+    @libretas.each{|l| yield l}
+  end
+  
+  def buscaLibretasPorNombre nombre
+    re = Regexp.new ".*#{nombre}.*", Regexp::IGNORECASE
+    @libretas.select{|l| l.nombre.match(re)}
+  end
   
 end

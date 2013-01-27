@@ -14,8 +14,8 @@ class Nota
   @modificado = DateTime::now
   @libreta = Libreta
   
-  attr_accessor :titulo
-  attr_reader :contenido, :creado, :modificado, :tags, :libreta
+  attr_accessor :titulo, :libreta
+  attr_reader :contenido, :creado, :modificado, :tags
   
   ## Persistencia de datos
   include Serializacion
@@ -49,16 +49,25 @@ class Nota
   ## modificación de tags
   def tags= tags_2
     @tags.each{|tag| tag.desvincularNota self}
+    @tags.each{|tag| @libreta.desvincularTag self}
     @tags = tags_2
-    tags_2.each{ |tag| tag.asociarNota self}
+    tags_2.each{|tag| tag.vincularNota self}
+    tags_2.each{|tag| @libreta.vincularTag tag, self}
     @modificado = DateTime::now
   end
-
-
+  
+  def libreta= libreta
+    @libreta.desvincularNota(self) if @libreta
+    @libreta = libreta
+    @libreta.vincularNota self
+  end
 
   ## @overrides RegistroActivo#antes_de_destruir  
   def antes_de_destruir
-    @tags.each{|tag| tag.desvincularNota self}    
+    @tags.each{|tag| 
+      tag.desvincularNota self
+    }    
+    @libreta.desvincularNota self if @libreta
   end
   
   ## @overrides RegistroActivo#dependientes

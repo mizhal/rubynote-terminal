@@ -15,14 +15,12 @@ class ControlAdmin
       opcion = @ui.menu
       case opcion
         when 1
-          crearCuentaYUsuario
+          submenuUsuarios
         when 2
-          borrarCuentaYUsuario
+          gestionCuentas
         when 3
-          cambiarClaveUsuarios
-        when 4
           cambiarTipoUsuario
-        when 5
+        when 4
           cnt = 0
           @ui.listarUsuariosCabecera 0
           usuarios = UsuarioNormal.iterador {|usuario|
@@ -35,14 +33,46 @@ class ControlAdmin
             cnt +=1
           }
           @ui.listarUsuariosFin
-        when 6
+        when 5
           cambiarClaveAdmin
+        when 6
+          exportarBD
         when 7
+          importarBD
+        when 8
           return
         else 
           @ui.opcionErronea
       end
     end
+  end
+  
+  def submenuUsuarios
+    while true
+      opcion = @ui.submenuUsuarios
+      case opcion
+      when 1
+        crearNuevoUsuario
+      when 2
+        eliminarUsuario
+      when 3
+        listadoUsuarios
+      when 4
+        return 
+      else
+        @ui.opcionErronea
+      end
+    end
+  end
+  
+  def crearNuevoUsuario
+    usuario = UsuarioNormal.new
+    @ui.formularioNuevoUsuario usuario
+    usuario.guarda
+  end
+  
+  def eliminarUsuario
+    
   end
   
   def cambiarClaveAdmin

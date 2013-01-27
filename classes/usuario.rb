@@ -40,7 +40,8 @@ class Usuario
   def self.autorizar login, password
     usuario = Usuario.busca(login, true)
     if usuario
-      return usuario if usuario.autorizarPassword(password)
+      return usuario if usuario.autorizarPassword(password) and 
+        (usuario.cuenta.activada or usuario.admin?)
     else
       return nil
     end

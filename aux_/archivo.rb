@@ -6,18 +6,9 @@
 
 require 'json'
 
-require_relative './referencia.rb'
-require_relative 'Serializacion.rb'
-
-## las clases deben estar definidas para que el archivo pueda des-serializarlas
-require_relative '../classes/cuenta.rb'
-require_relative '../classes/libreta.rb'
-require_relative '../classes/nota.rb'
-require_relative '../classes/tag.rb'
-require_relative '../classes/usuario_admin.rb'
-require_relative '../classes/usuario_normal.rb'
-
 class Archivo
+  require_relative './referencia.rb'
+  require_relative 'Serializacion.rb'
   
   attr_reader :instancias
   attr_writer :ruta_base
@@ -43,10 +34,17 @@ class Archivo
       if existeObjeto? nombre_clase, id
         return @instancias[nombre_clase][id]
       else
+        
         @herencia[nombre_clase].each{ |nombre_subclase|
-          return cargaObjeto(nombre_subclase, id, true) rescue nil
           # la busqueda que no lance excepcion retornara el objeto
           # elegido
+          begin
+            o = cargaObjeto(nombre_subclase, id, true) 
+            return o
+          rescue Exception => e
+            nil
+          end
+
         } if @herencia.has_key? nombre_clase
       end   
     else
@@ -133,7 +131,7 @@ class Archivo
       return
     else
       admin = UsuarioAdmin.crear :nombre => 'admin', 
-        :login => 'admin', 
+        :login => 'admin',
         :password => '123456'
       admin.guarda
     end
@@ -142,10 +140,6 @@ class Archivo
 end
 
 if __FILE__ == $0
-  require './nota.rb'
-  require './cuenta.rb'
-  require './usuario.rb'
-    
   Archivo.instancia().ruta_base = ".."
   
   n1 = Nota.new

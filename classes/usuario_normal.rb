@@ -15,4 +15,8 @@ class UsuarioNormal < Usuario
   def dependientes
     yield @cuenta
   end
+  
+  def cuentaActiva?
+    return cuenta.estaActivada?
+  end
 end

@@ -1,6 +1,108 @@
 * Rubynote
+** FOCO
 ** Pasos
-*** TODO prueba recorridos básicos
+*** TODO hacer bien la dependencia Libreta-N:M-Tag y Tag-N:M-Nota
+De momento no hay una manera clara de resolverlo:
+- Al eliminar una nota (o editar las tags), la relacion entre Tag y Libreta tiene una condicion muy compleja. Es necesario saber si la tag esta en alguna otra nota de la libreta, y no importa si está en otras libretas
+- Otras opciones como calcular las tags de la libreta a partir de las de las notas, son complicadas y de bajo rendimiento.
+**** TODO crear la funcionalidad de los usuarios premium
+***** TODO crear nuevas libretas
+***** TODO eliminar libretas
+***** TODO cambiar de libreta
+***** TODO listar libretas
+**** TODO vincular las tags a la libreta
+De esta manera se podrán mostrar al usuario en sesión solo las tags de la libreta que esté viendo en lugar de todas las que hay
+*** TODO implementar gestion libretas para cuentas premium
+**** TODO creacion de nuevas libretas
+**** TODO cambiar la libreta activa
+**** TODO borrar libretas
+Tengo que ver como hago para asegurarme de que la libreta inicial del usuario no se pueda borrar:
+- ponerle un nombre fijo que no se pueda cambiar
+- algun atributo
+- ?
+*** TODO (opcional )en la parte de entrada de datos, crear una interface de comandos
+En la entrada de texto para salir es necesario usar un comando "\salir". 
+La clase Editor está diseñada para poder crear más comandos y vincularlos a métodos o a lambdas.
+Creo que debería añadir esa funcionalidad a los Formulario, en concreto al método "consultaUsuario", de tal manera que el usuario pudiera usar comandos para, por ejemplo, consultar las tags del sistema o funciones similares.
+Para permitir interrumpir la entrada de datos también cuando se quiera, creo que sería interesante poder apilar los datos que se hayan introducido ya, por ejemplo terminando dichos datos con ">>>". De esta manera el usuario al pulsar intro no entrará en la recogida de datos sino que tendrá posibilidad de poner comandos.
+El comando /pop o similar podría servir para poner los datos archivados en la pantalla otra vez
+** TODO pruebas
+*** crear 2 libretas e intentar borrar las dos
+Debe fallar, porque el usuario siempre debe tener al menos una libreta
+*** crear 2 notas en dos libretas con la misma tag y borrarlas
+Debe comprobarse que la tag es borrada (no se guarda como json) a pesar de estar en libretas diferentes. También deben ser borradas todas las referencias a ellas.
+** CHECKLIST
+*** Los métodos deben ser de la forma camelCase
+*** Los require_relative deben estar dentro de la clase, en las primeras lineas
+Para evitar dependencias circulares no resueltas
+** Funcionalidades
+*** Existe siempre una cuenta de administrador
+*** Autenticarse como admin
+*** Autenticarse como usuario comun
+*** Registrarse como usuario
+*** Funciones de Admin
+**** Gestión de Usuarios
+***** Crear usuario
+Análogo al de registrarse
+***** Borrar Usuario
+Introducir login y confirmar
+***** Listar Usuarios
+Muestra una lista paginada
+**** Activar cuenta
+**** Desactivar cuenta
+**** Modificar el tipo de usuario (premium o normal)
+Flujo:
+introduzca el usuario
+MUESTRA: el usuario es PREMIUM/NORMAL
+¿cambiar? SI/NO
+**** Cambiar la clave de administrador
+Pide clave actual, la valida y clave nueva
+**** Exportar la base de datos
+pide el nombre de archivo
+**** Importar la base de datos
+pide el nombre de archivo
+*** Funciones de Usuario Normal
+**** Notas
+
+***** Buscar notas mediante tags
+Se debe estudiar si usar una formula del tipo
+(tag1 & tag2 & tag3) or (-tag2)
+O algo más sencillo
+***** Listar todas las notas con paginacion
+
+***** Ver las notas de una tag
+
+***** Ver el detalle de una nota (paginada)
+
+***** Editar una nota
+
+***** Crear una nota
+
+***** Modificar las tags de una nota
+
+***** Borrar una nota
+
+
+**** Libretas
+
+***** Crear una libreta
+      
+***** Entrar en una libreta
+
+***** Borrar una libreta
+
+***** Listar las notas de una libreta
+
+***** Buscar en las notas de una libreta
+      
+
+**** Configuracion y cuenta
+
+***** Definir el alto en lineas de una pantalla
+
+***** Modificar su clave
+
+***** Modificar sus datos
 ** Indice
    [[Pruebas]]
    [[Diario]]
