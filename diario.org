@@ -1,4 +1,4 @@
-* Rubynote
+* Proyecto Rubynote
 ** FOCO
 ** Pasos
 *** TODO hacer bien la dependencia Libreta-N:M-Tag y Tag-N:M-Nota
