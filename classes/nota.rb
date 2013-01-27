@@ -62,7 +62,7 @@ class Nota
     @libreta.vincularNota self
   end
 
-  ## @overrides RegistroActivo#antes_de_destruir  
+  ## @overrides Serializacion#antes_de_destruir  
   def antes_de_destruir
     @tags.each{|tag| 
       tag.desvincularNota self
@@ -70,7 +70,7 @@ class Nota
     @libreta.desvincularNota self if @libreta
   end
   
-  ## @overrides RegistroActivo#dependientes
+  ## @overrides Serializacion#dependientes
   def dependientes
     @tags.each{|t| yield t}
   end

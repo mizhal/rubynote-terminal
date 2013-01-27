@@ -31,7 +31,7 @@ class Libreta
     self.nombre
   end
   
-  ## Interface RegistroActivo
+  ## Interface de Serializacion
   def dependientes
     @notas.each{|n| yield n}
   end
