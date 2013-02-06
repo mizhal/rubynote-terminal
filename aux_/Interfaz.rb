@@ -48,7 +48,7 @@ module Interfaz
       end
     end
     
-    def print_flash
+    def printFlash
       puts self.flash.call() if self.flash
     end
     
@@ -57,7 +57,7 @@ module Interfaz
         puts
         puts @titulo
         puts "=" * @titulo.length
-        print_flash
+        printFlash
         @opciones.each_with_index{ |opcion, indice|
           puts "\t#{indice + 1}. #{opcion[0]}"  
         }
