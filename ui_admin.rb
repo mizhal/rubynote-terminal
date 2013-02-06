@@ -144,7 +144,7 @@ class UIAdmin
     datos_usuario = Formulario::lanza :estilo_validacion => :cada_campo do |f|
       f.titulo = "Cambio de clave de administrador"
       f.campo :clave_antigua, "Introduzca la clave actual", :String
-      f.valida_campo :clave_antigua, lambda {|datos, contexto|
+      f.validaCampo :clave_antigua, lambda {|datos, contexto|
         admin = UsuarioAdmin.busca "admin"
         contexto["admin"] = admin
         unless admin.autorizarPassword(datos)
@@ -152,13 +152,13 @@ class UIAdmin
         end
       }
       f.campo :clave_nueva, "Escriba la nueva clave", :String
-      f.valida_campo :clave_nueva, lambda { |datos, contexto|
+      f.validaCampo :clave_nueva, lambda { |datos, contexto|
         admin = contexto["admin"]
         admin.valida :password, datos
         contexto[:clave_nueva] = datos
       }
       f.campo :clave_nueva_confirmacion, "Confirme la nueva clave", :String
-      f.valida_campo :clave_nueva_confirmacion, lambda { |datos, contexto|
+      f.validaCampo :clave_nueva_confirmacion, lambda { |datos, contexto|
         unless contexto[:clave_nueva] == datos
           raise Exception.new "La confirmación no coincide con la clave nueva"
         end

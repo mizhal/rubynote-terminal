@@ -104,7 +104,7 @@ module Interfaz
       @campos << [nombre, texto, conversor]
     end
     
-    def valida_campo nombre, lambda_
+    def validaCampo nombre, lambda_
       @valida_campos[nombre] = lambda_ 
     end
     

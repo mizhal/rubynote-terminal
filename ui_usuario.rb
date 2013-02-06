@@ -43,7 +43,7 @@ class UIUsuario
     datos_nota = Formulario::lanza :estilo_validacion => :cada_campo do |f|
       f.titulo = "Crear nueva nota"
       f.campo :titulo, "Titulo de la nota", :String
-      f.valida_campo :titulo, lambda { |datos, contexto|
+      f.validaCampo :titulo, lambda { |datos, contexto|
         if datos.strip().empty?
           raise Exception.new "El título no puede estar en blanco"
         end
@@ -86,7 +86,7 @@ class UIUsuario
   def buscaNotasPorTexto contexto
     datos = Formulario::lanza :estilo_validacion => :cada_campo do |f|
       f.campo :texto, "escriba el texto a buscar:", :String
-      f.valida_campo :texto, lambda { |dato, contexto|
+      f.validaCampo :texto, lambda { |dato, contexto|
         unless dato and dato.length > 0
           raise Exception.new "No se puede dejar en blanco"
         end
@@ -111,7 +111,7 @@ class UIUsuario
   def buscaNotasPorTag contexto
     datos = Formulario::lanza :estilo_validacion => :cada_campo do |f|
       f.campo :tags, "escriba las tags separadas por comas:", :String
-      f.valida_campo :tags, lambda { |dato, contexto|
+      f.validaCampo :tags, lambda { |dato, contexto|
         unless dato and dato.length > 0
           raise Exception.new "No se puede dejar en blanco"
         end
@@ -160,7 +160,7 @@ class UIUsuario
 
     datos = Formulario::lanza :estilo_validacion => :cada_campo do |f|
       f.campo :posicion, "ahora puede elegir la nota que desea ver usando su posicion en la lista:", :Integer
-      f.valida_campo :posicion, lambda { |dato, contexto|
+      f.validaCampo :posicion, lambda { |dato, contexto|
         unless dato >= 0 and dato < notas.size
           raise Exception.new "No existe una nota en la posicion #{dato}"
         end
@@ -197,7 +197,7 @@ class UIUsuario
 
     datos = Formulario::lanza :estilo_validacion => :cada_campo do |f|
       f.campo :posicion, "ahora puede elegir la nota que desea eliminar usando su posicion en la lista:", :Integer
-      f.valida_campo :posicion, lambda { |dato, contexto|
+      f.validaCampo :posicion, lambda { |dato, contexto|
         unless dato >= 0 and dato < notas.size
           raise Exception.new "No existe una nota en la posicion #{dato}"
         end
@@ -237,7 +237,7 @@ class UIUsuario
     
     datos = Formulario::lanza :estilo_validacion => :cada_campo do |f|
       f.campo :posicion, "ahora puede elegir la libreta a la que desea cambiar usando su posicion en la lista:", :Integer
-      f.valida_campo :posicion, lambda { |dato, contexto|
+      f.validaCampo :posicion, lambda { |dato, contexto|
         unless dato >= 0 and dato < @usuario.cuenta.libretas.size
           raise Exception.new "No existe una libreta en la posicion #{dato}"
         end
@@ -252,7 +252,7 @@ class UIUsuario
   def nuevaLibreta contexto
     datos = Formulario::lanza :estilo_validacion => :cada_campo do |f|
       f.campo :nombre, "Escriba el nombre de la nueva libreta", :String
-      f.valida_campo :nombre, lambda { |dato, contexto|
+      f.validaCampo :nombre, lambda { |dato, contexto|
         if @usuario.cuenta.existeLibreta? dato
           raise Exception.new "Ya existe una libreta con el nombre '#{dato}'"
         end
@@ -281,7 +281,7 @@ class UIUsuario
     
     datos = Formulario::lanza :estilo_validacion => :cada_campo do |f|
       f.campo :posicion, "ahora puede elegir la libreta a la que desea borrar usando su posicion en la lista:", :Integer
-      f.valida_campo :posicion, lambda { |dato, contexto|
+      f.validaCampo :posicion, lambda { |dato, contexto|
         unless dato >= 0 and dato < @usuario.cuenta.libretas.size
           raise Exception.new "No existe una libreta en la posicion #{dato}"
         end
@@ -312,7 +312,7 @@ class UIUsuario
   def buscaLibretas contexto
     datos = Formulario::lanza :estilo_validacion => :cada_campo do |f|
       f.campo :nombre, "Escriba un texto para filtrar los nombres de las libretas", :String
-      f.valida_campo :nombre, lambda { |nombre, contexto|
+      f.validaCampo :nombre, lambda { |nombre, contexto|
         unless nombre and nombre.length > 0 
           raise Exception.new "No se puede dejar en blanco"
         end
