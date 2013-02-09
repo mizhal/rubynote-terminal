@@ -9,6 +9,21 @@ Probar los casos de uso fundamentales:
  etc...
 *** TODO revisar el código para eliminar partes no usadas
 Algunos metodos o clases que fueron descartados en algun rediseño y no los borré a tiempo
+** TODO Pruebas
+*** LOGIN
+- loguearse como usuario admin
+- salir de sesion de usuario admin
+- loguearse como usuario normal
+- salir de sesion como usuario normal
+- loguearse con login erroneo
+- loguearse con password erroneo
+*** CUENTAS
+- modificar estado de una cuenta
+  de a a b y de b a a 
+*** GEST USUARIOS
+- crear usuario mediante registro
+- crear usuario desde el panel de admin
+- borrar usuario y comprobar eliminacion de libretas y cuentas
 ** CHECKLIST
 *** Los métodos deben ser de la forma camelCase
 *** Los require_relative deben estar dentro de la clase, en las primeras lineas
