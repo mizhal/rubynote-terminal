@@ -108,6 +108,23 @@ module Interfaz
       @valida_campos[nombre] = lambda_ 
     end
     
+    def validaCampoIndividual nombre, texto, conversor
+      while true
+        entrada = Formulario::consultaUsuario(texto, conversor)
+        return nil if entrada == nil
+  
+        begin
+          @validador.valida(nombre, entrada) if @validador
+          @valida_campos[nombre].call(entrada, contexto) if @valida_campos.has_key? nombre
+          break
+        rescue Exception => e
+          puts "Campo #{nombre}: #{e}"
+          return nil unless Formulario::preguntaSiNo("Desea intentarlo de nuevo")
+        end
+      end
+      return entrada      
+    end
+    
     def ejecuta
       datos = {}
       while true
@@ -117,19 +134,7 @@ module Interfaz
         end
         @campos.each{ |campo|
           if @estilo_validacion == :cada_campo
-            while true
-              entrada = Formulario::consultaUsuario(campo[1], campo[2])
-              return nil if entrada == nil
-
-              begin
-                @validador.valida(campo[0], entrada) if @validador
-                @valida_campos[campo[0]].call(entrada, contexto) if @valida_campos.has_key? campo[0]
-                break
-              rescue Exception => e
-                puts "Campo #{campo[0]}: #{e}"
-                return nil unless Formulario::preguntaSiNo("Desea intentarlo de nuevo")
-              end
-            end
+            entrada = validaCampoIndividual campo[0], campo[1], campo[2]
           elsif @estilo_validacion == :final or @estilo_validacion == nil
             entrada = Formulario::consultaUsuario(campo[1], campo[2])
           else
