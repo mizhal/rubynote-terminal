@@ -17,8 +17,6 @@ class UIAdmin
       m.opcion "Cambiar tipo usuario a premium o viceversa", method(:gestionPremium)
       m.opcion "Listado de usuarios", method(:listadoUsuarios)
       m.opcion "Cambiar clave de administrador", method(:cambiarClave)
-      #m.opcion "Exportar base de datos", method(:exportarBD)
-      #m.opcion "Importar base de datos", method(:importarBD)
       m.opcion "Salir de sesión", lambda {|contexto| contexto.salir = true}
     end
   end
