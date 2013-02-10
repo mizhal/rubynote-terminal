@@ -33,8 +33,7 @@ class Archivo
     if incluye_herencia ## busca tambien en las subclases
       if existeObjeto? nombre_clase, id
         return @instancias[nombre_clase][id]
-      else
-        
+      else ## busqueda recursiva
         @herencia[nombre_clase].each{ |nombre_subclase|
           # la busqueda que no lance excepcion retornara el objeto
           # elegido
@@ -44,15 +43,13 @@ class Archivo
           rescue Exception => e
             nil
           end
-
         } if @herencia.has_key? nombre_clase
+        raise Exception.new "Solicitada instancia de objeto inexistente (#{nombre_clase}[#{id}])"  
       end   
     else
-      if existeObjeto? nombre_clase, id
-        return @instancias[nombre_clase][id]
-      end
-    end 
-    raise Exception.new "Solicitada instancia de objeto inexistente (#{nombre_clase}[#{id}])"     
+      return @instancias[nombre_clase][id] if existeObjeto? nombre_clase, id
+      raise Exception.new "Solicitada instancia de objeto inexistente (#{nombre_clase}[#{id}])"   
+    end
   end
   
   def iterador nombre_clase
