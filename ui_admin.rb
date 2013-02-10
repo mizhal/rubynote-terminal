@@ -60,8 +60,8 @@ class UIAdmin
     end
     
     if datos_usuario
-      u = Usuario.busca(datos_usuario[:login], true)
-      Archivo.instancia().elimina u
+      u = UsuarioNormal.busca(datos_usuario[:login], true)
+      u.destruye
       puts "Usuario #{u.login} eliminado del sistema"
     end
   end
