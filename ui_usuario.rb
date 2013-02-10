@@ -122,21 +122,10 @@ class UIUsuario
     
     tags = datos[:tags].split("\s*,\s*")
     
-    notas = []
-    tags.each{|tag|
-      tag_obj = Tag.busca tag
-      if tag_obj 
-        tag_obj.notas.each{|nota|
-          notas << nota unless notas.include? nota 
-        }
-      else
-        puts "La etiqueta #{tag} no existe"
-      end
-    }
     
     Listado::lanza do |l|
       l.tam_pagina = 5
-      l.coleccion = notas
+      l.coleccion = @libreta.buscaPorNombresDeTags(tags)
       l.titulo = "Listado de notas por tags"
       l.campo :titulo
       l.campo :modificado
