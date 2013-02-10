@@ -135,6 +135,7 @@ module Interfaz
         @campos.each{ |campo|
           if @estilo_validacion == :cada_campo
             entrada = validaCampoIndividual campo[0], campo[1], campo[2]
+            return nil if entrada == nil
           elsif @estilo_validacion == :final or @estilo_validacion == nil
             entrada = Formulario::consultaUsuario(campo[1], campo[2])
           else
