@@ -109,6 +109,18 @@ class Libreta
     @notas.select {|n| n.titulo.match(re) or n.contenido.match(re)}
   end
   
+  def buscaPorNombresDeTags tag_names
+    notas = []
+    tag_names.each{ |tag_name|
+      if @tag_index.has_key? tag_name
+        @tag_index[tag_name].each{|nota| notas << nota unless notas.include? nota}
+      else
+        puts "La tag #{tag_name} no existe en la libreta"
+      end
+    }
+    return notas
+  end
+  
   
   
 end
