@@ -31,7 +31,7 @@ class Cuenta
   
   def initialize usuario = nil
     @tipo = TipoCuenta::NORMAL
-    @libretas = [Libreta.crear("Varios")]
+    @libretas = [Libreta.crear("Varios", self)]
     @usuario = usuario
     @activada = false
   end

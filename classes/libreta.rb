@@ -10,9 +10,11 @@ class Libreta
   @nombre = String
   @notas = [Nota]
   @tags = {Nota => Tag}
+  @cuenta = Cuenta
   
   attr_accessor :nombre
   attr_reader :notas, :tags
+  attr_accessor :cuenta
   
   include Validacion
   validates :nombre, :presencia => true
@@ -20,15 +22,16 @@ class Libreta
   ## Persistencia de datos
   include Serializacion
   
-  def self.crear nombre
+  def self.crear nombre, cuenta
     l = new
     l.nombre = nombre
+    l.cuenta = cuenta
     return l
   end
   
   ## Interface rubynote_data
   def rubynoteKey
-    self.nombre
+    "#{self.nombre}:#{self.cuenta.rubynoteKey}" 
   end
   
   ## Interface de Serializacion
