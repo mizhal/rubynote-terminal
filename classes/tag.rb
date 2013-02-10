@@ -34,7 +34,7 @@ class Tag
   end
   
   def desvincularLibreta libreta
-    @libreta.delete libreta
+    @libretas.delete libreta
   end
   
   def vincularNota nota

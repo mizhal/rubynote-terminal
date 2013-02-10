@@ -260,7 +260,7 @@ class UIUsuario
     end
     return if datos == nil    
     
-    libreta = Libreta.crear(datos[:nombre])
+    libreta = Libreta.crear(datos[:nombre], @usuario.cuenta)
     @usuario.cuenta.libretas << libreta
     libreta.guarda
     
@@ -339,7 +339,7 @@ class UIUsuario
   def listarTags contexto
     Listado::lanza do |l|
       l.tam_pagina = 5
-      l.coleccion = @libreta.tags.keys.sort_by {|x| x.nombre}
+      l.coleccion = @libreta.tags.sort_by {|x| x.nombre}
       l.titulo = "Listado de etiquetas"
       l.campo :nombre
     end

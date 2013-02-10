@@ -84,8 +84,8 @@ class UIAdmin
       f.campo :login, "Login del dueño de la cuenta", :String
       f.validacion = lambda { |hash, contexto|
         raise Exception.new "El usuario admin no tiene cuenta" if hash[:login] == 'admin'
-        u = Usuario.busca(hash[:login], true)
-        raise Exception.new "El usuario no existe" unless u
+        u = UsuarioNormal.busca(hash[:login], true)
+        raise Exception.new "El usuario no existe" if u == nil
       }
     end
 
@@ -114,8 +114,8 @@ class UIAdmin
       f.campo :login, "Login del dueño de la cuenta", :String
       f.validacion = lambda { |hash, contexto|
         raise Exception.new "El usuario admin no tiene tipo de cuenta" if hash[:login] == 'admin'
-        u = Usuario.busca(hash[:login], true)
-        raise Exception.new "El usuario no existe" unless u
+        u = UsuarioNormal.busca(hash[:login], true)
+        raise Exception.new "El usuario no existe" if u == nil
       }
     end
     

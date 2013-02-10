@@ -9,7 +9,8 @@ class Libreta
   
   @nombre = String
   @notas = [Nota]
-  @tags = {Nota => Tag}
+  @tags = [Tag]
+  @tag_index = {String => [Nota]}
   @cuenta = Cuenta
   
   attr_accessor :nombre
@@ -41,7 +42,8 @@ class Libreta
   
   def initialize
     @notas = []
-    @tags = {}
+    @tags = []
+    @tag_index = {}
   end
   
   def nuevaNota titulo
@@ -79,18 +81,20 @@ class Libreta
   end
   
   def vincularTag tag, nota
-    unless @tags.has_key? tag
-      @tags[tag] = []
+    unless @tag_index.has_key? tag.nombre
+      @tag_index[tag.nombre] = []
+      @tags << tag
       tag.vincularLibreta self
     end 
-    @tags[tag] << nota unless @tags[tag].include? nota
+    @tag_index[tag.nombre] << nota unless @tag_index[tag.nombre].include? nota
   end
   
   def desvincularTag tag, nota
-    if @tags.has_key? tag
-      @tags[tag].delete nota
-      if @tags[tag].empty?
-        @tags[tag] = nil
+    if @tag_index.has_key? tag.nombre
+      @tag_index[tag.nombre].delete nota
+      if @tag_index[tag.nombre].empty?
+        @tag_index[tag.nombre] = nil
+        @tags.delete tag
         tag.desvincularLibreta self
       end
     end

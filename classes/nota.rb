@@ -66,6 +66,7 @@ class Nota
   def antes_de_destruir
     @tags.each{|tag| 
       tag.desvincularNota self
+      @libreta.desvincularTag tag, self
     }    
     @libreta.desvincularNota self if @libreta
   end
@@ -74,40 +75,4 @@ class Nota
   def dependientes
     @tags.each{|t| yield t}
   end
-end
-
-
-if __FILE__ == $0
-  n1 = Nota.new 
-  n1.titulo = "Donde estabas tú cuando el Dragón se rompió"
-  
-  n1.escribe """Every culture on Tamriel remembers the Dragon Break in some fashion; 
-to most it is a spiritual anguish that they cannot account for. Several texts survive this 
-timeless period, all (unsurprisingly) conflicting with each other regarding events, people, 
-and regions: wars are mentioned in some that never happen in another, the sun changes color 
-depending on the witness, and the gods either walk among the mortals or they don't. Even 
-the \"one thousand and eight years\", a number (some say arbitrarily) chosen by the Elder 
-Council, is an unreliable measure.
-"""
-  
-  n1.tags = ['lore', 'tamriel', '@morrowind', ':book-excerpt'].map{|t| o = Tag.new;o.nombre=t;o}
-  
-  n1.tags << "meet"
-  
-  puts n1.creado, n1.tags, n1.titulo
-  puts n1.contenido
-  
-  require 'json'
-  puts "____________"
-  puts n1.to_json
-  jsont = JSON.generate n1
-  puts jsont
-  
-  
-  puts 
-  puts "=============="
-  o = JSON.parse(jsont)
-  puts o
-  puts ">>>#{o.tags}, time: #{o.creado}"
-  
 end
