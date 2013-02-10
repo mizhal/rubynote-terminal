@@ -93,7 +93,7 @@ class Libreta
     if @tag_index.has_key? tag.nombre
       @tag_index[tag.nombre].delete nota
       if @tag_index[tag.nombre].empty?
-        @tag_index[tag.nombre] = nil
+        @tag_index.delete tag.nombre
         @tags.delete tag
         tag.desvincularLibreta self
       end
