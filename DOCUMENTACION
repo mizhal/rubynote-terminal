@@ -1,0 +1,58 @@
+#Rubynote
+
+## Manual de usuario
+
+El programa se inicia ejecutando el comando "ruby main.rb" en el directorio del programa.
+Alternativamente tambien se puede dar permisos de ejecución a dicho archivo "main.rb" y ejecutarlo directamente.
+
+En primer lugar se presenta un menu con la opcion de acceder a la/s libreta/s del usuario mediante clave y password, la opción de registrarse como nuevo usuario y la opción de abandonar el programa.
+
+Se garantiza que siempre existe un usuario administrador, con login "admin" y clave "123456", para poder empezar a configurar y usar el programa.
+
+### Opciones de administrador
+
+La primera opcion permite gestionar los usuarios, es decir, crear, eliminar y activar las cuentas de los usuarios.
+La segunda permite modificar el privilegio de los usuarios, cambiandolos de premium a normales o viceversa.
+En todas las opciones que requieran manipular un usuario, se preguntará por el login de dicho usuario, que deberá conocerse.
+Por último será posible listar los usuarios en el sistema y salir de este panel.
+
+### Opciones de usuario
+El usuario verá más o menos opciones en función de que tenga una cuenta normal o premium.
+Con la primera opción se puede crear una nota de la siguiente manera:
+ - El programa preguntará por un título, que es obligatorio.
+ - Después se presentará un prompt como este: ">>>" y se podrá escribir texto y pulsar Retorno de Carro sin que se cierre el "editor".
+ - Para finalizar, en una linea vacía deberá escribirse el comando "\salir"
+ - Finalmente se solicitarán las tags de la nota.
+ 
+El resto de opciones son autoexplicativas.
+
+## Elementos de Diseño
+
+El sistema consiste en tres tipos de interfaces y las clases de modelo que almacenan los datos y dan soporte a las acciones principales que se pueden realizar con esos datos.
+Adicionalmente, en la carpeta _aux se encuentran varios módulos auxiliares con funcionalidad transversal: Persistencia/Serialización mediante JSON y una librería de "widgets" para organizar "formularios", listados y otras maneras de interacción con el usuario.
+
+### Modulo de serialización
+El módulo de serialización se importa en las clases de modelo permitiendo que al iniciar el programa se cargen los datos almacenados en disco y que al terminar se vuelvan a almacenar con los cambios.
+Se basa en la librería estándar de JSON de Ruby y consiste en usar la introspección para conocer los atributos de cada clase, convertir cada objeto en un Hash con dichos atributos como claves (y alguno más para funcionamiento de la librería de JSON) y a partir de dicho Hash, la librería de json ya trabaja de manera autónoma.
+
+Se implementan funciones de serialización estilo ActiveRecord (guarda, destruye, busca...) para facilitar la escritura de código de persistencia.
+
+Emulando la función de la base de datos se crea el objeto singletón Archivo, que es un sistema de hashes que contienen referencias a todos los objetos en memoria, y que tiene la capacidad de volcarse a disco (con el proceso apoyado en la librería de JSON mencionado antes) y también de cargarse desde disco.
+Asimismo, para funcionalidades ampliadas como el mantenimiento de las referencias entre instancias en memoria, se ha dispuesto una clase auxiliar que permite guardar en disco la "dirección" del objeto referido y que luego el archivo puede utilizar para recomponer los enlaces/punteros una vez están creados otra vez todos los objetos en memoria.
+Otra funcionalidad que no viene de serie en la librería de JSON y para la que se ha creado una clase subsisdiaria es la serialización de las marcas de tiempo.
+Estas clases se verán representadas a menudo en los archivos JSON que componen la base de datos. En este caso las he denominado con nombres largos, explícitos y que se auto-documentan mejor, pero nada impide usar nombres más breves para ahorrar bytes.
+
+### Modulo de Interfaz
+Algunas funcionalidades como menues de selección, pedir un valor al usuario o crear un listado se repiten bastante a lo largo de este programa. Las clases de "interface" comparten entoces mucha funcionalidad y repetirla es farragoso y propenso a errores.
+Para poder implementar estas funcionalidades solo una vez se ha creado a modo de "widgets" clases concretas, con mucha flexibilidad de personalización, que representan listados, formularios y "editores".
+Debido a que los comportamientos son complejos y requieren validaciones, he decidido usar bloques de ruby al modo de Rails de tal manera que cuando se crea un widget es posible abrir un contexto y escribir agrupadas todas las configuraciones del comportamiento de dicho widget.
+Además he aprovechado las funciones anónimas o la capacidad de tomar "punteros a métodos" para incluir los comportamientos singulares de cada widget sin necesidad de reescribir uno nuevo cada vez.
+Esto es especialmente notable en el widget de Menú que conecta cada opción con un método de la clase que lo contiene, o en las validaciones concretas para los campos de los formularios que se resuelven mediante lambda funciones.
+
+### Clases de interface (ui)
+Con un rol similar a los controladores, estas clases gestionan las entradas del usuario y alteran el modelo cuando es necesario. Otra misión fundamental es la de guiar el flujo de ejecución del programa entre menús.
+A modo de vistas, usan los widgets definidos en el módulo de interfaz.  
+
+### Clases de modelo
+Vinculadas a cada uno de los tipos de datos que debe guardar la aplicación, implementan la asignación y mantenimiento de la consistencia si es necesario en cada caso. También tienen algunos métodos adicionales para realizar búsquedas en colecciones de objetos que dependan de un objeto "padre".
+Para ser compatibles con el sistema de serialización, se implementan también métodos que definen los objetos dependientes que es necesario borrar al borrar un objeto "padre" (similar al ":dependent=> :destroy" de Rails) y una suerte de callback para realizar acciones antes del borrado.
